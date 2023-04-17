@@ -31,9 +31,14 @@ router.post(
   "/",
   middleware.checkCarPayload,
   middleware.checkVinNumberValid,
+  middleware.checkVinNumberUnique,
   async (req, res, next) => {
-    //later
-    console.log(req.body);
+    try {
+      const newCar = await Car.create(req.body);
+      res.status(201).json(newCar);
+    } catch (err) {
+      next(err);
+    }
   }
 );
 
